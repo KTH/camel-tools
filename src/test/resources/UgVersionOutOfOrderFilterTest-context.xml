@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jolokia="http://www.jolokia.org/jolokia-spring/schema/config"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <bean id="camel_properties" class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer">
+    <property name="location" value="classpath:camel.properties" />
+  </bean>
+
+  <bean id="ugOutOfOrderFilter" class="se.kth.infosys.camel.UgVersionOutOfOrderFilter"/>
+
+  <camelContext id="testContext" xmlns="http://camel.apache.org/schema/spring">
+    <route id="testRoute">
+      <from uri="direct:start" />
+
+      <process ref="ugOutOfOrderFilter" />
+
+      <to uri="mock:end" />
+    </route>
+  </camelContext>
+</beans>

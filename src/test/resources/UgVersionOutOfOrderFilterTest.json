@@ -1,0 +1,128 @@
+[
+    {
+        "kthid": "u1abcde0",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["member"],
+        "primary_affiliation": "staff",
+        "tag": ["pa1","pa2"],
+        "group": ["pa.anstallda.VDPU", "ladok2.kurser.DD.DD1234.registrerade"]
+    },
+    {
+        "kthid": "u1abcde1",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": [],
+        "primary_affiliation": "other",
+        "tag": ["paindok","pa2"],
+        "group": ["pa.anstallda.VDPU"]
+    },
+    {
+        "kthid": "u1abcde2",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": [],
+        "primary_affiliation": "other",
+        "tag": [],
+        "group": ["ladok2.kurser.DD.DD1234.registrerade"]
+    },
+    {
+        "kthid": "u1abcde3",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["staff", "faculty", "member", "employee"],
+        "primary_affiliation": "other",
+        "tag": [],
+        "group": ["app.affiliation.include.member"]
+    },
+    {
+        "kthid": "u1abcde4",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["staff", "faculty", "member", "employee"],
+        "primary_affiliation": "other",
+        "tag": [],
+        "group": ["edu.courses.DD.DD1321.20172.1.teachers"]
+    },
+    {
+        "kthid": "u1abcde5",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["staff", "faculty", "member", "employee"],
+        "primary_affiliation": "other",
+        "tag": [],
+        "group": ["edu.courses.DD.DD1321.20112.1.teachers"]
+    },
+    {
+        "kthid": "u1abcde6",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["staff", "faculty", "member", "employee"],
+        "primary_affiliation": "other",
+        "tag": [],
+        "group": ["org.skolor.ece.lib.resource-access"]
+    },
+    {
+        "kthid": "u1abcde7",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["staff", "faculty", "member", "employee"],
+        "primary_affiliation": "other",
+        "tag": [],
+        "group": ["app.affiliation.include.affiliate"]
+    },
+    {
+        "kthid": "u1nochang",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["staff", "member", "employee"],
+        "primary_affiliation": "staff",
+        "tag": [],
+        "group": ["pa.anstallda.V.VPDU"]
+    },
+    {
+        "kthid": "u1abcde8",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": ["staff", "faculty", "member", "employee"],
+        "primary_affiliation": "other",
+        "tag": [],
+        "group": ["app.affiliation.include.affiliate.rt.213871236"]
+    },
+    {
+        "kthid": "u1abcde9",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": [],
+        "primary_affiliation": null,
+        "tag": [],
+        "group": ["some.group"]
+    },
+    {
+        "kthid": "u1abcdea",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": [],
+        "primary_affiliation": null,
+        "tag": [],
+        "group": ["ladok2.program.TISYM.slutat",
+                  "ladok2.program.TSEDM",
+                  "ladok2.program.TSEDM.registrerade_20171",
+                  "ladok2.program.TSEDM.registrerade_termin_2_20171"]
+    },
+    {
+        "kthid": "u1abcdeb",
+        "ugClass": "user",
+        "deleted": false,
+        "affiliation": [],
+        "primary_affiliation": null,
+        "tag": [],
+        "group": ["app.affiliation.include.employee.123"]
+    },
+    {
+        "kthid": "u2group1",
+        "ug1Name": "some.group",
+        "ugClass": "group",
+        "deleted": false
+    }
+]
