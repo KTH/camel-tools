@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>se.kth.infosys.smx</groupId>
   <artifactId>camel-tools</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>Camel Tools</name>
   <description>Common Apache Camel tools to reuse</description>
   <url>https://www.kth.se</url>
@@ -142,6 +142,12 @@
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.2</version>
       </plugin>
 
       <!-- Source required by Sonatype -->
