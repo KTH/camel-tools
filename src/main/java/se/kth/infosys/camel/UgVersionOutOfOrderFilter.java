@@ -33,8 +33,18 @@ import org.slf4j.LoggerFactory;
 import se.kth.infosys.camel.ug.UgMessage;
 
 /**
- * A filter to use in order to prevent out of sequence updates for UgObjects 
- * to pass through, overriding previous updates with older data.
+ * A Camel Processor filter to use in order to prevent out of sequence updates 
+ * for UgObjects to pass through, overriding previous updates with older data.
+ * 
+ * Example of use:
+ *
+ * <pre>
+ * &lt;bean id="ugUpdateOutOfOrderFilter" class="se.kth.infosys.camel.UgVersionOutOfOrderFilter"&gt;
+ *   &lt;param name="size" value="10000" /&gt;
+ * &lt;/bean&gt;
+ * ...
+ * &lt;process ref="ugUpdateOutOfOrderFilter"/&gt;
+ * </pre>
  */
 public class UgVersionOutOfOrderFilter implements Processor {
     private static final Logger LOG = LoggerFactory.getLogger(UgVersionOutOfOrderFilter.class);
