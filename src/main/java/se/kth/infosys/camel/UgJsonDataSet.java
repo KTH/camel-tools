@@ -1,68 +1,92 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+/*
+ * MIT License
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * Copyright (c) 2017 Kungliga Tekniska högskolan
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 package se.kth.infosys.camel;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.component.dataset.ListDataSet;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import se.kth.infosys.camel.ug.UgMessage;
 
 /**
  * A DataSet that reads JSON encoded UG payloads from a file.
+ * 
+ * The file is assumed to contain a stream of objects used as part of one UG sync
+ * event. UgMessage start and done messages with empty bodies will be inserted
+ * before and after this stream.
+ * 
+ * Relevant UgMessage headers will be added to messages produced by this
+ * dataset.
+ * 
+ * Example of use:
+ * <pre>
+ * &lt;bean id="ugDataSet" class="se.kth.infosys.camel.UgJsonDataSet"&gt;
+ *   &lt;property name="sourceFile" value="classpath:ug-data.json"/&gt;
+ *   &lt;property name="size" value="32"/&gt;
+ * &lt;/bean&gt;
+ * ...
+ * &lt;from uri="dataset:ugDataSet" /&gt;
+ * </pre>
  */
-public class UgJsonDataSet extends ListDataSet {
+public class UgJsonDataSet extends JsonDataSet {
     protected static final JSONParser parser = new JSONParser();
-    private JSONArray jsonObjects = new JSONArray();
-    private File sourceFile;
     
     public UgJsonDataSet() {}
 
-    public UgJsonDataSet(String sourceFileName) throws IOException, ParseException {
-        this(new File(sourceFileName));
+    /**
+     * Constructor taking the name of a source file.
+     * @param sourceFileName the name of the file.
+     * @throws Exception on file access and parse errors.
+     */
+    public UgJsonDataSet(String sourceFileName) throws Exception {
+        super(sourceFileName);
     }
 
-    public UgJsonDataSet(File sourceFile) throws IOException, ParseException {
-        setSourceFile(sourceFile);
+    /**
+     * Constructor taking a File object.
+     * @param sourceFile the File object.
+     * @throws Exception on file access and parse errors.
+     */
+    public UgJsonDataSet(File sourceFile) throws Exception {
+        super(sourceFile);
     }
 
-    public File getSourceFile() {
-        return sourceFile;
-    }
-
-    public void setSourceFile(File sourceFile) throws IOException, ParseException {
-        this.sourceFile = sourceFile;
-        readSourceFile();
-    }
-
-    private void readSourceFile() throws IOException, ParseException {
+    /**
+     * {@inheritDoc} 
+     */
+    @Override
+    protected void readSourceFile() throws Exception {
         List<Object> bodies = new LinkedList<>();
-        jsonObjects = (JSONArray) parser.parse(new FileReader(sourceFile));
+        JSONArray jsonObjects = (JSONArray) parser.parse(new FileReader(getSourceFile()));
         
         bodies.add(null);
         
@@ -73,8 +97,12 @@ public class UgJsonDataSet extends ListDataSet {
 
         bodies.add(null);
         setDefaultBodies(bodies);
+        setJsonObjects(jsonObjects);
     }
     
+    /**
+     * {@inheritDoc} 
+     */
     @Override
     protected void applyHeaders(Exchange exchange, long messageIndex) {
         Map<String, Object> headers = new HashMap<>();
@@ -85,12 +113,10 @@ public class UgJsonDataSet extends ListDataSet {
 
         if (isStartMessage(messageIndex)) {
             headers.put(UgMessage.Header.Operation, UgMessage.Operation.SyncStart);
-        }
-        else if (isDoneMessage(messageIndex)) {
+        } else if (isDoneMessage(messageIndex)) {
             headers.put(UgMessage.Header.Operation, UgMessage.Operation.SyncDone);
-        }
-        else {
-            JSONObject jsonObject = (JSONObject) jsonObjects.get((int) (messageIndex % getDefaultBodies().size()) - 1);
+        } else {
+            JSONObject jsonObject = (JSONObject) getJsonObjects().get((int) (messageIndex % getDefaultBodies().size()) - 1);
             if (((Boolean) jsonObject.get("deleted")).booleanValue()) {
                 headers.put(UgMessage.Header.Operation, UgMessage.Operation.Delete);
             } else {

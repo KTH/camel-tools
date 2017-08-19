@@ -36,7 +36,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 @RunWith(CamelSpringRunner.class)
 @BootstrapWith(CamelTestContextBootstrapper.class)
 @ContextConfiguration()
-public class UgJsonDataSetTest extends AbstractJUnit4SpringContextTests {
+public class JsonDataSetTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     protected CamelContext camelContext;
 
@@ -45,7 +45,7 @@ public class UgJsonDataSetTest extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testReceived() throws Exception {
-        mockEnd.expectedMessageCount(32);
+        mockEnd.expectedMessageCount(10);
         MockEndpoint.assertIsSatisfied(camelContext);
     }
 }
