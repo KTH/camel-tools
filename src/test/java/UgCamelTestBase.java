@@ -37,7 +37,7 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import se.kth.infosys.camel.ug.internal.UgMessage;
+import se.kth.infosys.camel.ug.UgMessage;
 
 public abstract class UgCamelTestBase extends AbstractJUnit4SpringContextTests {
     protected static final JSONParser parser = new JSONParser(); 

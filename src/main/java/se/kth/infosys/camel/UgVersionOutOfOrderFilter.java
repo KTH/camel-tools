@@ -30,7 +30,7 @@ import org.apache.camel.util.ExchangeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.kth.infosys.camel.ug.internal.UgMessage;
+import se.kth.infosys.camel.ug.UgMessage;
 
 /**
  * A filter to use in order to prevent out of sequence updates for UgObjects 
