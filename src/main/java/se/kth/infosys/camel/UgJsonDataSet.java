@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.component.dataset.ListDataSet;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -36,33 +35,23 @@ import se.kth.infosys.camel.ug.UgMessage;
 /**
  * A DataSet that reads JSON encoded UG payloads from a file.
  */
-public class UgJsonDataSet extends ListDataSet {
+public class UgJsonDataSet extends JsonDataSet {
     protected static final JSONParser parser = new JSONParser();
-    private JSONArray jsonObjects = new JSONArray();
-    private File sourceFile;
     
     public UgJsonDataSet() {}
 
     public UgJsonDataSet(String sourceFileName) throws IOException, ParseException {
-        this(new File(sourceFileName));
+        super(sourceFileName);
     }
 
     public UgJsonDataSet(File sourceFile) throws IOException, ParseException {
-        setSourceFile(sourceFile);
+        super(sourceFile);
     }
 
-    public File getSourceFile() {
-        return sourceFile;
-    }
-
-    public void setSourceFile(File sourceFile) throws IOException, ParseException {
-        this.sourceFile = sourceFile;
-        readSourceFile();
-    }
-
-    private void readSourceFile() throws IOException, ParseException {
+    @Override
+    protected void readSourceFile() throws IOException, ParseException {
         List<Object> bodies = new LinkedList<>();
-        jsonObjects = (JSONArray) parser.parse(new FileReader(sourceFile));
+        JSONArray jsonObjects = (JSONArray) parser.parse(new FileReader(getSourceFile()));
         
         bodies.add(null);
         
@@ -73,6 +62,7 @@ public class UgJsonDataSet extends ListDataSet {
 
         bodies.add(null);
         setDefaultBodies(bodies);
+        setJsonObjects(jsonObjects);
     }
     
     @Override
@@ -85,12 +75,10 @@ public class UgJsonDataSet extends ListDataSet {
 
         if (isStartMessage(messageIndex)) {
             headers.put(UgMessage.Header.Operation, UgMessage.Operation.SyncStart);
-        }
-        else if (isDoneMessage(messageIndex)) {
+        } else if (isDoneMessage(messageIndex)) {
             headers.put(UgMessage.Header.Operation, UgMessage.Operation.SyncDone);
-        }
-        else {
-            JSONObject jsonObject = (JSONObject) jsonObjects.get((int) (messageIndex % getDefaultBodies().size()) - 1);
+        } else {
+            JSONObject jsonObject = (JSONObject) getJsonObjects().get((int) (messageIndex % getDefaultBodies().size()) - 1);
             if (((Boolean) jsonObject.get("deleted")).booleanValue()) {
                 headers.put(UgMessage.Header.Operation, UgMessage.Operation.Delete);
             } else {

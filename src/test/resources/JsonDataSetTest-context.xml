@@ -33,14 +33,14 @@
     <property name="location" value="classpath:camel.properties" />
   </bean>
 
-  <bean id="ugDataSet" class="se.kth.infosys.camel.UgJsonDataSet">
-     <property name="sourceFile" value="classpath:UgJsonDataSetTest.json"/>
-     <property name="size" value="32"/>
+  <bean id="jsonDataSet" class="se.kth.infosys.camel.JsonDataSet">
+     <property name="sourceFile" value="classpath:JsonDataSetTest.json"/>
+     <property name="size" value="10"/>
   </bean>
 
   <camelContext id="testContext" xmlns="http://camel.apache.org/schema/spring">
     <route id="testRoute">
-      <from uri="dataset:ugDataSet" />
+      <from uri="dataset:jsonDataSet" />
       <to uri="log:dataset?level=INFO&amp;showHeaders=true" />
       <to uri="mock:end" />
     </route>
