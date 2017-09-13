@@ -26,7 +26,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>se.kth.infosys.smx</groupId>
   <artifactId>camel-tools</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
   <name>Camel Tools</name>
   <description>Common Apache Camel tools to reuse</description>
   <url>https://www.kth.se</url>
