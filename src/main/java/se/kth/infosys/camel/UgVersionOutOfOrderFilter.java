@@ -26,6 +26,7 @@ package se.kth.infosys.camel;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.apache.camel.spi.UnitOfWork;
 import org.apache.camel.util.ExchangeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class UgVersionOutOfOrderFilter implements Processor {
         final long version = ExchangeHelper.getMandatoryHeader(exchange, UgMessage.Header.Version, Long.class);
         final String kthid = ExchangeHelper.getMandatoryHeader(exchange, UgMessage.Header.Kthid, String.class);
 
-        if (cache.get(kthid) != null && (version <= cache.get(kthid))) {
+        if (cache.get(kthid) != null && (version < cache.get(kthid))) {
             LOG.warn("Operation {} for {} version {} out of order, dropping.", operation, kthid, version);
             exchange.setProperty(Exchange.ROUTE_STOP, Boolean.TRUE);
         }

@@ -115,7 +115,7 @@ public class JsonDataSet extends ListDataSet {
     protected void readSourceFile() throws Exception {
         List<Object> bodies = new LinkedList<>();
         jsonObjects = (JSONArray) parser.parse(new FileReader(sourceFile));
-        
+
         for (int i = 0; i < jsonObjects.size(); i++) {
             JSONObject jsonObject = (JSONObject) jsonObjects.get(i);
             bodies.add(jsonObject.toJSONString().getBytes());
