@@ -97,7 +97,7 @@
     <dependency>
       <groupId>se.kth.infosys.smx</groupId>
       <artifactId>camel-ug-component</artifactId>
-      <version>1.5.0</version>
+      <version>1.7.0</version>
     </dependency>
 
     <!-- Testing -->
