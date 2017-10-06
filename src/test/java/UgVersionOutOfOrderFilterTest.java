@@ -39,7 +39,7 @@ public class UgVersionOutOfOrderFilterTest extends UgCamelTestBase {
 
     @Test
     public void testReceived() throws Exception {
-        mockEnd.assertExchangeReceived(1);
+        mockEnd.expectedMessageCount(16);
         MockEndpoint.assertIsSatisfied(camelContext);
     }
 }
