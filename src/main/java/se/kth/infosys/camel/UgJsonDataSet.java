@@ -38,6 +38,8 @@ import org.json.simple.parser.JSONParser;
 import se.kth.infosys.camel.ug.UgMessage;
 
 /**
+ * @deprecated Use version in maven artifact camel-ug-test-tools instead.
+ * 
  * A DataSet that reads JSON encoded UG payloads from a file.
  * 
  * The file is assumed to contain a stream of objects used as part of one UG sync
@@ -57,6 +59,7 @@ import se.kth.infosys.camel.ug.UgMessage;
  * &lt;from uri="dataset:ugDataSet" /&gt;
  * </pre>
  */
+@Deprecated
 public class UgJsonDataSet extends JsonDataSet {
     protected static final JSONParser parser = new JSONParser();
     
