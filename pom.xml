@@ -26,59 +26,23 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>se.kth.infosys.smx</groupId>
   <artifactId>camel-tools</artifactId>
-  <version>0.0.6</version>
+  <version>3.0.1</version>
   <name>Camel Tools</name>
   <description>Common Apache Camel tools to reuse</description>
   <url>https://www.kth.se</url>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
 
   <properties>
+    <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
-  <!-- License information required by Sonatype -->
-  <licenses>
-    <license>
-      <name>The MIT License (MIT)</name>
-      <url>https://opensource.org/licenses/MIT</url>
-    </license>
-  </licenses>
-
-  <!-- Source control management required by Sonatype -->
-  <scm>
-    <connection>scm:git:git://github.com/kth/camel-tools</connection>
-    <developerConnection>scm:git:git://github.com/kth/camel-tools</developerConnection>
-    <url>http://github.com/kth/bunyan-layout/</url>
-  </scm>
-
-  <!-- Developer connection information required by Sonatype -->
-  <developers>
-    <developer>
-      <name>Fredrik Jönsson</name>
-      <email>fjo@kth.se</email>
-      <organization>KTH</organization>
-      <organizationUrl>http://www.kth.se/profile/fjo</organizationUrl>
-    </developer>
-  </developers>
-
-  <!-- The actual Sonatype distribution repository -->
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>apache-camel</artifactId>
-        <version>2.19.3</version>
+        <version>3.0.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -97,7 +61,12 @@
     <dependency>
       <groupId>se.kth.infosys.smx</groupId>
       <artifactId>camel-ug-component</artifactId>
-      <version>1.9.0</version>
+      <version>3.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
     </dependency>
 
     <!-- Testing -->
@@ -132,85 +101,60 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.googlecode.json-simple</groupId>
-      <artifactId>json-simple</artifactId>
-      <version>1.1.1</version>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>2.3.2</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
   <profiles>
     <profile>
       <id>release</id>
-
       <build>
         <defaultGoal>clean deploy</defaultGoal>
         <plugins>
-          <!-- Sonatype release plugin -->
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.8</version>
-            <extensions>true</extensions>
-            <configuration>
-               <serverId>ossrh</serverId>
-               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-               <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
-          </plugin>
-
-          <!-- Signing required by Sonatype -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>
   </profiles>
 
+
+  <distributionManagement>
+    <repository>
+      <id>integration</id>
+      <url>https://pkgs.dev.azure.com/kth-integration/_packaging/integration/maven/v1</url>
+    </repository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>integration</id>
+      <url>https://pkgs.dev.azure.com/kth-integration/_packaging/integration/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <build>
     <defaultGoal>package</defaultGoal>
 
     <plugins>
-      <!-- to generate the MANIFEST-FILE of the bundle -->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>2.3.7</version>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Import-Package>*</Import-Package>
-            <Export-Package>se.kth.infosys.camel</Export-Package>
-          </instructions>
-        </configuration>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
+        <version>3.8.1</version>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.2</version>
+        <version>3.1.0</version>
         <configuration>
           <encoding>UTF-8</encoding>
         </configuration>
@@ -219,14 +163,13 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.7</version>
       </plugin>
 
-      <!-- Source required by Sonatype -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.2.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -236,11 +179,11 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Javadoc required by Sonatype -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
+        <version>3.1.1</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -251,6 +194,53 @@
         </executions>
         <configuration/>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>(3.6,)</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>(11,)</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/kth/camel-tools</connection>
+    <developerConnection>scm:git:git://github.com/kth/camel-tools</developerConnection>
+    <url>http://github.com/kth/bunyan-layout/</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <name>Fredrik Jönsson</name>
+      <email>fjo@kth.se</email>
+      <organization>KTH</organization>
+      <organizationUrl>http://www.kth.se/profile/fjo</organizationUrl>
+    </developer>
+  </developers>
+
 </project>
